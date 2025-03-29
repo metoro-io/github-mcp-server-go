@@ -121,7 +121,7 @@ func (o *PushFilesOptions) Validate() error {
 }
 
 // GetFileContents gets the contents of a file from a GitHub repository
-func GetFileContents(options *GetFileContentsOptions) (interface{}, error) {
+func GetFileContents(options *GetFileContentsOptions, apiReqs *common.APIRequirements) (interface{}, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -138,7 +138,7 @@ func GetFileContents(options *GetFileContentsOptions) (interface{}, error) {
 		}
 	}
 
-	resp, err := common.GitHubRequest(url, "GET", nil)
+	resp, err := common.GitHubRequest(url, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func GetFileContents(options *GetFileContentsOptions) (interface{}, error) {
 }
 
 // CreateOrUpdateFile creates or updates a file in a GitHub repository
-func CreateOrUpdateFile(options *CreateOrUpdateFileOptions) (*common.FileContent, error) {
+func CreateOrUpdateFile(options *CreateOrUpdateFileOptions, apiReqs *common.APIRequirements) (*common.FileContent, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -198,7 +198,7 @@ func CreateOrUpdateFile(options *CreateOrUpdateFileOptions) (*common.FileContent
 			Path:  options.Path,
 			Ref:   options.Branch,
 		}
-		existingFile, err := GetFileContents(getOptions)
+		existingFile, err := GetFileContents(getOptions, apiReqs)
 		if err == nil {
 			// File exists, get its SHA
 			if fileContent, ok := existingFile.(common.FileContent); ok {
@@ -234,7 +234,7 @@ func CreateOrUpdateFile(options *CreateOrUpdateFileOptions) (*common.FileContent
 		requestBody["author"] = options.Author
 	}
 
-	resp, err := common.GitHubRequest(url, "PUT", requestBody)
+	resp, err := common.GitHubRequest(url, "PUT", requestBody, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -263,7 +263,7 @@ func CreateOrUpdateFile(options *CreateOrUpdateFileOptions) (*common.FileContent
 }
 
 // PushFiles pushes multiple files to a GitHub repository in a single commit
-func PushFiles(options *PushFilesOptions) (interface{}, error) {
+func PushFiles(options *PushFilesOptions, apiReqs *common.APIRequirements) (interface{}, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -273,7 +273,7 @@ func PushFiles(options *PushFilesOptions) (interface{}, error) {
 	if baseSHA == "" {
 		url := fmt.Sprintf("https://api.github.com/repos/%s/%s/git/refs/heads/%s",
 			options.Owner, options.Repo, options.Branch)
-		resp, err := common.GitHubRequest(url, "GET", nil)
+		resp, err := common.GitHubRequest(url, "GET", nil, apiReqs)
 		if err != nil {
 			return nil, fmt.Errorf("error getting branch reference: %w", err)
 		}
@@ -298,7 +298,7 @@ func PushFiles(options *PushFilesOptions) (interface{}, error) {
 	// Get the base tree
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/git/commits/%s",
 		options.Owner, options.Repo, baseSHA)
-	resp, err := common.GitHubRequest(url, "GET", nil)
+	resp, err := common.GitHubRequest(url, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, fmt.Errorf("error getting commit: %w", err)
 	}
@@ -348,7 +348,7 @@ func PushFiles(options *PushFilesOptions) (interface{}, error) {
 		"tree":      treeItems,
 	}
 
-	treeResp, err := common.GitHubRequest(createTreeURL, "POST", createTreeBody)
+	treeResp, err := common.GitHubRequest(createTreeURL, "POST", createTreeBody, apiReqs)
 	if err != nil {
 		return nil, fmt.Errorf("error creating tree: %w", err)
 	}
@@ -372,7 +372,7 @@ func PushFiles(options *PushFilesOptions) (interface{}, error) {
 		"parents": []string{baseSHA},
 	}
 
-	commitResp, err := common.GitHubRequest(createCommitURL, "POST", createCommitBody)
+	commitResp, err := common.GitHubRequest(createCommitURL, "POST", createCommitBody, apiReqs)
 	if err != nil {
 		return nil, fmt.Errorf("error creating commit: %w", err)
 	}
@@ -394,7 +394,7 @@ func PushFiles(options *PushFilesOptions) (interface{}, error) {
 		"sha": newCommitSHA,
 	}
 
-	_, err = common.GitHubRequest(updateRefURL, "PATCH", updateRefBody)
+	_, err = common.GitHubRequest(updateRefURL, "PATCH", updateRefBody, apiReqs)
 	if err != nil {
 		return nil, fmt.Errorf("error updating reference: %w", err)
 	}

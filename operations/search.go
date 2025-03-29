@@ -54,7 +54,7 @@ func (o *SearchUsersOptions) Validate() error {
 }
 
 // SearchCode searches for code across GitHub repositories
-func SearchCode(options *SearchCodeOptions) (*common.GitHubSearchCodeResponse, error) {
+func SearchCode(options *SearchCodeOptions, apiReqs *common.APIRequirements) (*common.GitHubSearchCodeResponse, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func SearchCode(options *SearchCodeOptions) (*common.GitHubSearchCodeResponse, e
 		return nil, err
 	}
 
-	resp, err := common.GitHubRequest(fullURL, "GET", nil)
+	resp, err := common.GitHubRequest(fullURL, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func SearchCode(options *SearchCodeOptions) (*common.GitHubSearchCodeResponse, e
 }
 
 // SearchIssues searches for issues and pull requests across GitHub repositories
-func SearchIssues(options *SearchIssuesOptions) (*common.GitHubSearchIssuesResponse, error) {
+func SearchIssues(options *SearchIssuesOptions, apiReqs *common.APIRequirements) (*common.GitHubSearchIssuesResponse, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -121,7 +121,7 @@ func SearchIssues(options *SearchIssuesOptions) (*common.GitHubSearchIssuesRespo
 		return nil, err
 	}
 
-	resp, err := common.GitHubRequest(fullURL, "GET", nil)
+	resp, err := common.GitHubRequest(fullURL, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +140,7 @@ func SearchIssues(options *SearchIssuesOptions) (*common.GitHubSearchIssuesRespo
 }
 
 // SearchUsers searches for users on GitHub
-func SearchUsers(options *SearchUsersOptions) (*common.GitHubSearchUsersResponse, error) {
+func SearchUsers(options *SearchUsersOptions, apiReqs *common.APIRequirements) (*common.GitHubSearchUsersResponse, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -164,7 +164,7 @@ func SearchUsers(options *SearchUsersOptions) (*common.GitHubSearchUsersResponse
 		return nil, err
 	}
 
-	resp, err := common.GitHubRequest(fullURL, "GET", nil)
+	resp, err := common.GitHubRequest(fullURL, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}

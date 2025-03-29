@@ -37,7 +37,7 @@ func (o *ListCommitsOptions) Validate() error {
 }
 
 // ListCommits lists commits in a GitHub repository
-func ListCommits(options *ListCommitsOptions) ([]common.GitHubCommit, error) {
+func ListCommits(options *ListCommitsOptions, apiReqs *common.APIRequirements) ([]common.GitHubCommit, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func ListCommits(options *ListCommitsOptions) ([]common.GitHubCommit, error) {
 		}
 	}
 
-	resp, err := common.GitHubRequest(url, "GET", nil)
+	resp, err := common.GitHubRequest(url, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}

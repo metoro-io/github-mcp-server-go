@@ -2,6 +2,7 @@ package common
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -9,6 +10,9 @@ import (
 	"net/url"
 	"os"
 	"regexp"
+	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -16,7 +20,67 @@ const (
 	VERSION = "1.0.0"
 	// USER_AGENT is the user agent sent with requests
 	USER_AGENT = "modelcontextprotocol/servers/github-go/v" + VERSION
+	// GITHUB_TOKEN_ENV_VAR is the environment variable name for the GitHub token
+	GITHUB_TOKEN_ENV_VAR = "GITHUB_PERSONAL_ACCESS_TOKEN"
 )
+
+// APIRequirements contains the authentication information for GitHub API
+type APIRequirements struct {
+	Token string
+}
+
+// GetGitHubAPIRequirementsFromContext extracts GitHub authentication information from the request context
+func GetGitHubAPIRequirementsFromContext(ctx context.Context) *APIRequirements {
+	// Try to get the gin context from the context
+	c := ctx.Value("ginContext")
+	if c == nil {
+		// Fall back to the previous method for backward compatibility
+		reqVal := ctx.Value("http_request")
+		if reqVal == nil {
+			return nil
+		}
+
+		httpReq, ok := reqVal.(*http.Request)
+		if !ok {
+			return nil
+		}
+
+		// Extract authorization header
+		authHeader := httpReq.Header.Get("Authorization")
+		if authHeader != "" {
+			// The header might be in the format "Bearer <token>" or just "<token>"
+			token := authHeader
+			if strings.HasPrefix(strings.ToLower(authHeader), "bearer ") {
+				token = authHeader[7:] // Remove "Bearer " prefix
+			}
+
+			return &APIRequirements{
+				Token: token,
+			}
+		}
+
+		return nil
+	}
+
+	ginContext, ok := c.(*gin.Context)
+	if !ok {
+		return nil
+	}
+
+	if ginContext.Request.Header.Get("Authorization") != "" {
+		// The header might be in the format "Bearer <token>" or just "<token>"
+		token := ginContext.Request.Header.Get("Authorization")
+		if strings.HasPrefix(strings.ToLower(token), "bearer ") {
+			token = token[7:] // Remove "Bearer " prefix
+		}
+
+		return &APIRequirements{
+			Token: token,
+		}
+	}
+
+	return nil
+}
 
 // BuildURL builds a URL with query parameters
 func BuildURL(baseURL string, params map[string]string) (string, error) {
@@ -36,7 +100,7 @@ func BuildURL(baseURL string, params map[string]string) (string, error) {
 }
 
 // GitHubRequest sends an HTTP request to the GitHub API
-func GitHubRequest(urlStr string, method string, body interface{}) (interface{}, error) {
+func GitHubRequest(urlStr string, method string, body interface{}, apiReqs *APIRequirements) (interface{}, error) {
 	var bodyReader io.Reader
 	if body != nil {
 		bodyBytes, err := json.Marshal(body)
@@ -55,7 +119,14 @@ func GitHubRequest(urlStr string, method string, body interface{}) (interface{},
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", USER_AGENT)
 
-	token := os.Getenv("GITHUB_PERSONAL_ACCESS_TOKEN")
+	// Use token from provided APIRequirements if available, otherwise fall back to environment variable
+	var token string
+	if apiReqs != nil && apiReqs.Token != "" {
+		token = apiReqs.Token
+	} else {
+		token = os.Getenv(GITHUB_TOKEN_ENV_VAR)
+	}
+
 	if token != "" {
 		req.Header.Set("Authorization", "Bearer "+token)
 	}
@@ -153,7 +224,7 @@ func ValidateOwnerName(owner string) (string, error) {
 // CheckBranchExists checks if a branch exists in a repository
 func CheckBranchExists(owner, repo, branch string) (bool, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/branches/%s", owner, repo, branch)
-	_, err := GitHubRequest(url, "GET", nil)
+	_, err := GitHubRequest(url, "GET", nil, nil)
 	if err != nil {
 		if _, ok := err.(*GitHubResourceNotFoundError); ok {
 			return false, nil
@@ -166,7 +237,7 @@ func CheckBranchExists(owner, repo, branch string) (bool, error) {
 // CheckUserExists checks if a GitHub user exists
 func CheckUserExists(username string) (bool, error) {
 	url := fmt.Sprintf("https://api.github.com/users/%s", username)
-	_, err := GitHubRequest(url, "GET", nil)
+	_, err := GitHubRequest(url, "GET", nil, nil)
 	if err != nil {
 		if _, ok := err.(*GitHubResourceNotFoundError); ok {
 			return false, nil

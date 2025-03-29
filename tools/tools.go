@@ -103,7 +103,9 @@ var GitHubToolsList = []GitHubTool{
 
 // SearchRepositoriesHandler handles search_repositories requests
 func SearchRepositoriesHandler(ctx context.Context, args operations.SearchRepositoriesOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.SearchRepositories(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.SearchRepositories(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -118,7 +120,9 @@ func SearchRepositoriesHandler(ctx context.Context, args operations.SearchReposi
 
 // CreateRepositoryHandler handles create_repository requests
 func CreateRepositoryHandler(ctx context.Context, args operations.CreateRepositoryOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.CreateRepository(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.CreateRepository(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -133,7 +137,9 @@ func CreateRepositoryHandler(ctx context.Context, args operations.CreateReposito
 
 // ForkRepositoryHandler handles fork_repository requests
 func ForkRepositoryHandler(ctx context.Context, args operations.ForkRepositoryOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.ForkRepository(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.ForkRepository(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -148,7 +154,9 @@ func ForkRepositoryHandler(ctx context.Context, args operations.ForkRepositoryOp
 
 // CreateBranchHandler handles create_branch requests
 func CreateBranchHandler(ctx context.Context, args operations.CreateBranchOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.CreateBranchFromRef(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.CreateBranchFromRef(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -163,7 +171,9 @@ func CreateBranchHandler(ctx context.Context, args operations.CreateBranchOption
 
 // GetFileContentsHandler handles get_file_contents requests
 func GetFileContentsHandler(ctx context.Context, args operations.GetFileContentsOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.GetFileContents(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.GetFileContents(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -178,7 +188,9 @@ func GetFileContentsHandler(ctx context.Context, args operations.GetFileContents
 
 // CreateOrUpdateFileHandler handles create_or_update_file requests
 func CreateOrUpdateFileHandler(ctx context.Context, args operations.CreateOrUpdateFileOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.CreateOrUpdateFile(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.CreateOrUpdateFile(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -193,7 +205,9 @@ func CreateOrUpdateFileHandler(ctx context.Context, args operations.CreateOrUpda
 
 // PushFilesHandler handles push_files requests
 func PushFilesHandler(ctx context.Context, args operations.PushFilesOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.PushFiles(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.PushFiles(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -208,7 +222,9 @@ func PushFilesHandler(ctx context.Context, args operations.PushFilesOptions) (*m
 
 // CreateIssueHandler handles create_issue requests
 func CreateIssueHandler(ctx context.Context, args operations.CreateIssueOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.CreateIssue(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.CreateIssue(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -223,7 +239,9 @@ func CreateIssueHandler(ctx context.Context, args operations.CreateIssueOptions)
 
 // GetIssueHandler handles get_issue requests
 func GetIssueHandler(ctx context.Context, args operations.GetIssueOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.GetIssue(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.GetIssue(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -238,7 +256,9 @@ func GetIssueHandler(ctx context.Context, args operations.GetIssueOptions) (*mcp
 
 // ListIssuesHandler handles list_issues requests
 func ListIssuesHandler(ctx context.Context, args operations.ListIssuesOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.ListIssues(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.ListIssues(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -253,7 +273,9 @@ func ListIssuesHandler(ctx context.Context, args operations.ListIssuesOptions) (
 
 // UpdateIssueHandler handles update_issue requests
 func UpdateIssueHandler(ctx context.Context, args operations.UpdateIssueOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.UpdateIssue(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.UpdateIssue(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -268,7 +290,9 @@ func UpdateIssueHandler(ctx context.Context, args operations.UpdateIssueOptions)
 
 // AddIssueCommentHandler handles add_issue_comment requests
 func AddIssueCommentHandler(ctx context.Context, args operations.IssueCommentOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.AddIssueComment(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.AddIssueComment(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -283,7 +307,9 @@ func AddIssueCommentHandler(ctx context.Context, args operations.IssueCommentOpt
 
 // ListCommitsHandler handles list_commits requests
 func ListCommitsHandler(ctx context.Context, args operations.ListCommitsOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.ListCommits(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.ListCommits(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -298,7 +324,9 @@ func ListCommitsHandler(ctx context.Context, args operations.ListCommitsOptions)
 
 // SearchCodeHandler handles search_code requests
 func SearchCodeHandler(ctx context.Context, args operations.SearchCodeOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.SearchCode(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.SearchCode(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -313,7 +341,9 @@ func SearchCodeHandler(ctx context.Context, args operations.SearchCodeOptions) (
 
 // SearchIssuesHandler handles search_issues requests
 func SearchIssuesHandler(ctx context.Context, args operations.SearchIssuesOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.SearchIssues(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.SearchIssues(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
@@ -328,7 +358,9 @@ func SearchIssuesHandler(ctx context.Context, args operations.SearchIssuesOption
 
 // SearchUsersHandler handles search_users requests
 func SearchUsersHandler(ctx context.Context, args operations.SearchUsersOptions) (*mcpgolang.ToolResponse, error) {
-	result, err := operations.SearchUsers(&args)
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.SearchUsers(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}

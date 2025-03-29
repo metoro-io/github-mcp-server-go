@@ -139,7 +139,7 @@ func (o *IssueCommentOptions) Validate() error {
 }
 
 // CreateIssue creates a new issue in a GitHub repository
-func CreateIssue(options *CreateIssueOptions) (*common.GitHubIssue, error) {
+func CreateIssue(options *CreateIssueOptions, apiReqs *common.APIRequirements) (*common.GitHubIssue, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -159,7 +159,7 @@ func CreateIssue(options *CreateIssueOptions) (*common.GitHubIssue, error) {
 		requestBody["labels"] = options.Labels
 	}
 
-	resp, err := common.GitHubRequest(url, "POST", requestBody)
+	resp, err := common.GitHubRequest(url, "POST", requestBody, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +178,7 @@ func CreateIssue(options *CreateIssueOptions) (*common.GitHubIssue, error) {
 }
 
 // GetIssue gets details of a specific issue in a GitHub repository
-func GetIssue(options *GetIssueOptions) (*common.GitHubIssue, error) {
+func GetIssue(options *GetIssueOptions, apiReqs *common.APIRequirements) (*common.GitHubIssue, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -186,7 +186,7 @@ func GetIssue(options *GetIssueOptions) (*common.GitHubIssue, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/issues/%d",
 		options.Owner, options.Repo, options.Number)
 
-	resp, err := common.GitHubRequest(url, "GET", nil)
+	resp, err := common.GitHubRequest(url, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -205,7 +205,7 @@ func GetIssue(options *GetIssueOptions) (*common.GitHubIssue, error) {
 }
 
 // ListIssues lists issues in a GitHub repository
-func ListIssues(options *ListIssuesOptions) ([]common.GitHubIssue, error) {
+func ListIssues(options *ListIssuesOptions, apiReqs *common.APIRequirements) ([]common.GitHubIssue, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -237,7 +237,7 @@ func ListIssues(options *ListIssuesOptions) ([]common.GitHubIssue, error) {
 		}
 	}
 
-	resp, err := common.GitHubRequest(url, "GET", nil)
+	resp, err := common.GitHubRequest(url, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -256,7 +256,7 @@ func ListIssues(options *ListIssuesOptions) ([]common.GitHubIssue, error) {
 }
 
 // UpdateIssue updates an existing issue in a GitHub repository
-func UpdateIssue(options *UpdateIssueOptions) (*common.GitHubIssue, error) {
+func UpdateIssue(options *UpdateIssueOptions, apiReqs *common.APIRequirements) (*common.GitHubIssue, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -281,7 +281,7 @@ func UpdateIssue(options *UpdateIssueOptions) (*common.GitHubIssue, error) {
 		requestBody["labels"] = options.Labels
 	}
 
-	resp, err := common.GitHubRequest(url, "PATCH", requestBody)
+	resp, err := common.GitHubRequest(url, "PATCH", requestBody, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -300,7 +300,7 @@ func UpdateIssue(options *UpdateIssueOptions) (*common.GitHubIssue, error) {
 }
 
 // AddIssueComment adds a comment to an existing issue
-func AddIssueComment(options *IssueCommentOptions) (interface{}, error) {
+func AddIssueComment(options *IssueCommentOptions, apiReqs *common.APIRequirements) (interface{}, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -312,7 +312,7 @@ func AddIssueComment(options *IssueCommentOptions) (interface{}, error) {
 		"body": options.Body,
 	}
 
-	resp, err := common.GitHubRequest(url, "POST", requestBody)
+	resp, err := common.GitHubRequest(url, "POST", requestBody, apiReqs)
 	if err != nil {
 		return nil, err
 	}

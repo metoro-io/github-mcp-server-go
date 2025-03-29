@@ -61,12 +61,12 @@ func (o *ForkRepositoryOptions) Validate() error {
 }
 
 // CreateRepository creates a new GitHub repository
-func CreateRepository(options *CreateRepositoryOptions) (*common.GitHubRepository, error) {
+func CreateRepository(options *CreateRepositoryOptions, apiReqs *common.APIRequirements) (*common.GitHubRepository, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
 
-	resp, err := common.GitHubRequest("https://api.github.com/user/repos", "POST", options)
+	resp, err := common.GitHubRequest("https://api.github.com/user/repos", "POST", options, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func CreateRepository(options *CreateRepositoryOptions) (*common.GitHubRepositor
 }
 
 // SearchRepositories searches for GitHub repositories
-func SearchRepositories(options *SearchRepositoriesOptions) (*common.GitHubSearchResponse, error) {
+func SearchRepositories(options *SearchRepositoriesOptions, apiReqs *common.APIRequirements) (*common.GitHubSearchResponse, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func SearchRepositories(options *SearchRepositoriesOptions) (*common.GitHubSearc
 		return nil, err
 	}
 
-	resp, err := common.GitHubRequest(url, "GET", nil)
+	resp, err := common.GitHubRequest(url, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func SearchRepositories(options *SearchRepositoriesOptions) (*common.GitHubSearc
 }
 
 // ForkRepository forks a GitHub repository
-func ForkRepository(options *ForkRepositoryOptions) (*common.GitHubRepository, error) {
+func ForkRepository(options *ForkRepositoryOptions, apiReqs *common.APIRequirements) (*common.GitHubRepository, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
@@ -144,7 +144,7 @@ func ForkRepository(options *ForkRepositoryOptions) (*common.GitHubRepository, e
 		}
 	}
 
-	resp, err := common.GitHubRequest(url, "POST", nil)
+	resp, err := common.GitHubRequest(url, "POST", nil, apiReqs)
 	if err != nil {
 		return nil, err
 	}

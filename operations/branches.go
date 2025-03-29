@@ -33,14 +33,14 @@ func (o *CreateBranchOptions) Validate() error {
 }
 
 // CreateBranchFromRef creates a new branch in a GitHub repository
-func CreateBranchFromRef(options *CreateBranchOptions) (*common.GitHubBranch, error) {
+func CreateBranchFromRef(options *CreateBranchOptions, apiReqs *common.APIRequirements) (*common.GitHubBranch, error) {
 	if err := options.Validate(); err != nil {
 		return nil, err
 	}
 
 	// First get the source branch to get the SHA
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/branches/%s", options.Owner, options.Repo, options.FromBranch)
-	resp, err := common.GitHubRequest(url, "GET", nil)
+	resp, err := common.GitHubRequest(url, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, fmt.Errorf("error getting source branch: %w", err)
 	}
@@ -62,14 +62,14 @@ func CreateBranchFromRef(options *CreateBranchOptions) (*common.GitHubBranch, er
 		"sha": sourceBranch.Commit.SHA,
 	}
 
-	_, err = common.GitHubRequest(refURL, "POST", refData)
+	_, err = common.GitHubRequest(refURL, "POST", refData, apiReqs)
 	if err != nil {
 		return nil, fmt.Errorf("error creating branch: %w", err)
 	}
 
 	// Verify branch was created
 	branchURL := fmt.Sprintf("https://api.github.com/repos/%s/%s/branches/%s", options.Owner, options.Repo, options.Branch)
-	branchResp, err := common.GitHubRequest(branchURL, "GET", nil)
+	branchResp, err := common.GitHubRequest(branchURL, "GET", nil, apiReqs)
 	if err != nil {
 		return nil, fmt.Errorf("branch might have been created but verification failed: %w", err)
 	}
