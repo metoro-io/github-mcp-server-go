@@ -10,7 +10,7 @@ A Go implementation of the GitHub Model Context Protocol (MCP) server. This impl
 ## Installation
 
 ```bash
-go get github.com/metoro-k8s/github-mcp-server-go
+go get github.com/metoro-io/github-mcp-server-go
 ```
 
 ## Authentication

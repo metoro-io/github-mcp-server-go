@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/metoro-k8s/github-mcp-server-go/common"
+	"github.com/metoro-io/github-mcp-server-go/common"
 )
 
 // ListCommitsOptions defines options for listing commits

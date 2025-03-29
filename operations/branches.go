@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/metoro-k8s/github-mcp-server-go/common"
+	"github.com/metoro-io/github-mcp-server-go/common"
 )
 
 // CreateBranchOptions defines the options for creating a branch

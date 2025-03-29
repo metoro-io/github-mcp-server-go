@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/metoro-io/github-mcp-server-go/tools"
 	mcpgolang "github.com/metoro-io/mcp-golang"
 	"github.com/metoro-io/mcp-golang/transport/stdio"
-	"github.com/metoro-k8s/github-mcp-server-go/tools"
 )
 
 func main() {

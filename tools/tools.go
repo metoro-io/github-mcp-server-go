@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/metoro-io/github-mcp-server-go/common"
+	"github.com/metoro-io/github-mcp-server-go/operations"
 	mcpgolang "github.com/metoro-io/mcp-golang"
-	"github.com/metoro-k8s/github-mcp-server-go/common"
-	"github.com/metoro-k8s/github-mcp-server-go/operations"
 )
 
 // GitHubTool represents a GitHub tool handler
