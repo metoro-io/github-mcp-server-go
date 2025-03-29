@@ -1,4 +1,4 @@
-module github.com/metoro-k8s/github-mcp-server-go
+module github.com/metoro-io/github-mcp-server-go
 
 go 1.21
 
