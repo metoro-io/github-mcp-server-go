@@ -13,13 +13,44 @@ A Go implementation of the GitHub Model Context Protocol (MCP) server. This impl
 go get github.com/metoro-k8s/github-mcp-server-go
 ```
 
-## Usage
+## Authentication
 
-1. Set your GitHub personal access token as an environment variable:
+The server supports two methods of authentication:
+
+### Environment Variable Authentication
+
+Set your GitHub personal access token as an environment variable:
 
 ```bash
 export GITHUB_PERSONAL_ACCESS_TOKEN=your_github_token
 ```
+
+### HTTP Header Authentication
+
+The server can also extract authentication tokens from HTTP requests. You can pass your GitHub token via the Authorization header:
+
+```
+Authorization: Bearer your_github_token
+```
+
+or simply:
+
+```
+Authorization: your_github_token
+```
+
+#### Context Passthrough
+
+For HTTP handlers, the server supports both:
+
+1. The standard `http_request` context value for HTTP requests.
+2. The `ginContext` value when using the Gin framework.
+
+This enables seamless integration with different web frameworks while maintaining a consistent authentication mechanism.
+
+## Usage
+
+1. Set your GitHub personal access token (as described in the Authentication section).
 
 2. Run the server:
 
