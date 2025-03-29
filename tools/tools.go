@@ -1,9 +1,11 @@
 package tools
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 
+	mcpgolang "github.com/metoro-io/mcp-golang"
 	"github.com/metoro-k8s/github-mcp-server-go/common"
 	"github.com/metoro-k8s/github-mcp-server-go/operations"
 )
@@ -100,243 +102,243 @@ var GitHubToolsList = []GitHubTool{
 }
 
 // SearchRepositoriesHandler handles search_repositories requests
-func SearchRepositoriesHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.SearchRepositoriesOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.SearchRepositories(&options)
+func SearchRepositoriesHandler(ctx context.Context, args operations.SearchRepositoriesOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.SearchRepositories(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // CreateRepositoryHandler handles create_repository requests
-func CreateRepositoryHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.CreateRepositoryOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.CreateRepository(&options)
+func CreateRepositoryHandler(ctx context.Context, args operations.CreateRepositoryOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.CreateRepository(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // ForkRepositoryHandler handles fork_repository requests
-func ForkRepositoryHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.ForkRepositoryOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.ForkRepository(&options)
+func ForkRepositoryHandler(ctx context.Context, args operations.ForkRepositoryOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.ForkRepository(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // CreateBranchHandler handles create_branch requests
-func CreateBranchHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.CreateBranchOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.CreateBranchFromRef(&options)
+func CreateBranchHandler(ctx context.Context, args operations.CreateBranchOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.CreateBranchFromRef(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // GetFileContentsHandler handles get_file_contents requests
-func GetFileContentsHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.GetFileContentsOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.GetFileContents(&options)
+func GetFileContentsHandler(ctx context.Context, args operations.GetFileContentsOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.GetFileContents(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // CreateOrUpdateFileHandler handles create_or_update_file requests
-func CreateOrUpdateFileHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.CreateOrUpdateFileOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.CreateOrUpdateFile(&options)
+func CreateOrUpdateFileHandler(ctx context.Context, args operations.CreateOrUpdateFileOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.CreateOrUpdateFile(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // PushFilesHandler handles push_files requests
-func PushFilesHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.PushFilesOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.PushFiles(&options)
+func PushFilesHandler(ctx context.Context, args operations.PushFilesOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.PushFiles(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // CreateIssueHandler handles create_issue requests
-func CreateIssueHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.CreateIssueOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.CreateIssue(&options)
+func CreateIssueHandler(ctx context.Context, args operations.CreateIssueOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.CreateIssue(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // GetIssueHandler handles get_issue requests
-func GetIssueHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.GetIssueOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.GetIssue(&options)
+func GetIssueHandler(ctx context.Context, args operations.GetIssueOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.GetIssue(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // ListIssuesHandler handles list_issues requests
-func ListIssuesHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.ListIssuesOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.ListIssues(&options)
+func ListIssuesHandler(ctx context.Context, args operations.ListIssuesOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.ListIssues(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // UpdateIssueHandler handles update_issue requests
-func UpdateIssueHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.UpdateIssueOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.UpdateIssue(&options)
+func UpdateIssueHandler(ctx context.Context, args operations.UpdateIssueOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.UpdateIssue(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // AddIssueCommentHandler handles add_issue_comment requests
-func AddIssueCommentHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.IssueCommentOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.AddIssueComment(&options)
+func AddIssueCommentHandler(ctx context.Context, args operations.IssueCommentOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.AddIssueComment(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // ListCommitsHandler handles list_commits requests
-func ListCommitsHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.ListCommitsOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.ListCommits(&options)
+func ListCommitsHandler(ctx context.Context, args operations.ListCommitsOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.ListCommits(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // SearchCodeHandler handles search_code requests
-func SearchCodeHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.SearchCodeOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.SearchCode(&options)
+func SearchCodeHandler(ctx context.Context, args operations.SearchCodeOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.SearchCode(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // SearchIssuesHandler handles search_issues requests
-func SearchIssuesHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.SearchIssuesOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.SearchIssues(&options)
+func SearchIssuesHandler(ctx context.Context, args operations.SearchIssuesOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.SearchIssues(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // SearchUsersHandler handles search_users requests
-func SearchUsersHandler(rawArgs json.RawMessage) (interface{}, error) {
-	var options operations.SearchUsersOptions
-	if err := json.Unmarshal(rawArgs, &options); err != nil {
-		return nil, fmt.Errorf("invalid arguments: %w", err)
-	}
-
-	result, err := operations.SearchUsers(&options)
+func SearchUsersHandler(ctx context.Context, args operations.SearchUsersOptions) (*mcpgolang.ToolResponse, error) {
+	result, err := operations.SearchUsers(&args)
 	if err != nil {
 		return nil, formatError(err)
 	}
 
-	return result, nil
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
 }
 
 // formatError formats errors for response
