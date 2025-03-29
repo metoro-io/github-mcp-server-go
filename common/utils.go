@@ -133,9 +133,18 @@ func ValidateOwnerName(owner string) (string, error) {
 		return "", fmt.Errorf("owner name cannot be empty")
 	}
 
-	match, _ := regexp.MatchString(`^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$`, sanitized)
-	if !match {
-		return "", fmt.Errorf("owner name must start with a letter or number and can contain up to 39 characters")
+	// GitHub usernames and organization names can contain alphanumeric characters and hyphens
+	// They must start with an alphanumeric character and can't have consecutive hyphens
+	// Max length is 39 characters
+	match, _ := regexp.MatchString(`^[a-zA-Z0-9]([a-zA-Z0-9]|-)*[a-zA-Z0-9]$`, sanitized)
+	if !match && len(sanitized) > 1 {
+		return "", fmt.Errorf("owner name must start and end with a letter or number, can contain hyphens (but not consecutive ones), and can be up to 39 characters")
+	} else if !match {
+		return "", fmt.Errorf("owner name must be alphanumeric")
+	}
+
+	if len(sanitized) > 39 {
+		return "", fmt.Errorf("owner name is too long (max 39 characters)")
 	}
 
 	return sanitized, nil
