@@ -11,10 +11,10 @@ import (
 
 // GetFileContentsOptions defines options for getting file contents
 type GetFileContentsOptions struct {
-	Owner string `json:"owner"`
-	Repo  string `json:"repo"`
-	Path  string `json:"path"`
-	Ref   string `json:"ref,omitempty"`
+	Owner string `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo  string `json:"repo" jsonschema:"description=The name of the repository containing the file"`
+	Path  string `json:"path" jsonschema:"description=The path to the file or directory within the repository"`
+	Ref   string `json:"ref,omitempty" jsonschema:"description=The name of the commit/branch/tag. Default: the repository's default branch (usually main)"`
 }
 
 // Validate validates the GetFileContentsOptions
@@ -33,21 +33,21 @@ func (o *GetFileContentsOptions) Validate() error {
 
 // CreateOrUpdateFileOptions defines options for creating or updating a file
 type CreateOrUpdateFileOptions struct {
-	Owner     string         `json:"owner"`
-	Repo      string         `json:"repo"`
-	Path      string         `json:"path"`
-	Message   string         `json:"message"`
-	Content   string         `json:"content"`
-	Branch    string         `json:"branch,omitempty"`
-	SHA       string         `json:"sha,omitempty"`
-	Committer *CommitterInfo `json:"committer,omitempty"`
-	Author    *CommitterInfo `json:"author,omitempty"`
+	Owner     string         `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo      string         `json:"repo" jsonschema:"description=The name of the repository where the file will be created or updated"`
+	Path      string         `json:"path" jsonschema:"description=The path to the file within the repository"`
+	Message   string         `json:"message" jsonschema:"description=The commit message for the file creation or update"`
+	Content   string         `json:"content" jsonschema:"description=The new content of the file as a string"`
+	Branch    string         `json:"branch,omitempty" jsonschema:"description=The branch name to commit to. Default: the repository's default branch (usually main)"`
+	SHA       string         `json:"sha,omitempty" jsonschema:"description=The blob SHA of the file being replaced if updating an existing file"`
+	Committer *CommitterInfo `json:"committer,omitempty" jsonschema:"description=Information about the committer. If omitted the authenticated user's information is used"`
+	Author    *CommitterInfo `json:"author,omitempty" jsonschema:"description=Information about the author. If omitted the committer information is used"`
 }
 
 // CommitterInfo represents author/committer information
 type CommitterInfo struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Name  string `json:"name" jsonschema:"description=The name of the author or committer"`
+	Email string `json:"email" jsonschema:"description=The email of the author or committer"`
 }
 
 // Validate validates the CreateOrUpdateFileOptions
@@ -77,19 +77,19 @@ func (o *CreateOrUpdateFileOptions) Validate() error {
 
 // PushFilesOptions defines options for pushing multiple files
 type PushFilesOptions struct {
-	Owner   string               `json:"owner"`
-	Repo    string               `json:"repo"`
-	Branch  string               `json:"branch"`
-	Message string               `json:"message"`
-	Files   []PushFileDefinition `json:"files"`
-	BaseSHA string               `json:"base_sha,omitempty"`
+	Owner   string               `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo    string               `json:"repo" jsonschema:"description=The name of the repository where the files will be pushed"`
+	Branch  string               `json:"branch" jsonschema:"description=The branch name to commit to"`
+	Message string               `json:"message" jsonschema:"description=The commit message for this push operation"`
+	Files   []PushFileDefinition `json:"files" jsonschema:"description=Array of files to create update or delete in this push operation"`
+	BaseSHA string               `json:"base_sha,omitempty" jsonschema:"description=The SHA of the base commit to apply changes to. Default: latest commit on the specified branch"`
 }
 
 // PushFileDefinition represents a file to push
 type PushFileDefinition struct {
-	Path    string `json:"path"`
-	Content string `json:"content"`
-	Delete  bool   `json:"delete,omitempty"`
+	Path    string `json:"path" jsonschema:"description=The path to the file within the repository"`
+	Content string `json:"content" jsonschema:"description=The content of the file as a string. Required unless Delete is true"`
+	Delete  bool   `json:"delete,omitempty" jsonschema:"description=Whether to delete this file. If true Content is not required"`
 }
 
 // Validate validates the PushFilesOptions

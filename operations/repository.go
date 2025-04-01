@@ -10,10 +10,18 @@ import (
 
 // CreateRepositoryOptions defines the options for creating a repository
 type CreateRepositoryOptions struct {
-	Name        string `json:"name"`
-	Description string `json:"description,omitempty"`
-	Private     bool   `json:"private,omitempty"`
-	AutoInit    bool   `json:"auto_init,omitempty"`
+	// Name is the name of the repository to create
+	// Must contain only letters, numbers, hyphens, periods, and underscores
+	Name string `json:"name" jsonschema:"description=The name of the repository to create. Must contain only letters numbers hyphens periods and underscores"`
+
+	// Description is an optional description of the repository
+	Description string `json:"description,omitempty" jsonschema:"description=An optional description of the repository"`
+
+	// Private determines whether the repository is private (true) or public (false)
+	Private bool `json:"private,omitempty" jsonschema:"description=Determines whether the repository is private (true) or public (false)"`
+
+	// AutoInit determines whether to create an initial commit with README file
+	AutoInit bool `json:"auto_init,omitempty" jsonschema:"description=Determines whether to create an initial commit with README file"`
 }
 
 // Validate validates the CreateRepositoryOptions
@@ -24,9 +32,18 @@ func (o *CreateRepositoryOptions) Validate() error {
 
 // SearchRepositoriesOptions defines the options for searching repositories
 type SearchRepositoriesOptions struct {
-	Query   string `json:"query"`
-	Page    int    `json:"page,omitempty"`
-	PerPage int    `json:"per_page,omitempty"`
+	// Query is the search query string
+	// Format follows GitHub's search syntax
+	// Example: "language:go stars:>100"
+	Query string `json:"query" jsonschema:"description=The search query string. Format follows GitHub's search syntax. Example: language:go stars:>100"`
+
+	// Page is the page number for paginated results
+	// Default is 1 if not specified
+	Page int `json:"page,omitempty" jsonschema:"description=The page number for paginated results. Default is 1 if not specified"`
+
+	// PerPage is the number of results per page
+	// Values between 1-100, default is 30
+	PerPage int `json:"per_page,omitempty" jsonschema:"description=The number of results per page. Values between 1-100 default is 30"`
 }
 
 // Validate validates the SearchRepositoriesOptions
@@ -39,9 +56,15 @@ func (o *SearchRepositoriesOptions) Validate() error {
 
 // ForkRepositoryOptions defines the options for forking a repository
 type ForkRepositoryOptions struct {
-	Owner        string `json:"owner"`
-	Repo         string `json:"repo"`
-	Organization string `json:"organization,omitempty"`
+	// Owner is the username or organization name that owns the repository to fork
+	Owner string `json:"owner" jsonschema:"description=The username or organization name that owns the repository to fork"`
+
+	// Repo is the name of the repository to fork
+	Repo string `json:"repo" jsonschema:"description=The name of the repository to fork"`
+
+	// Organization is an optional organization name to fork the repository to
+	// If not specified, the repository will be forked to the authenticated user's account
+	Organization string `json:"organization,omitempty" jsonschema:"description=An optional organization name to fork the repository to. If not specified the repository will be forked to the authenticated user's account"`
 }
 
 // Validate validates the ForkRepositoryOptions

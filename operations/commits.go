@@ -10,14 +10,14 @@ import (
 
 // ListCommitsOptions defines options for listing commits
 type ListCommitsOptions struct {
-	Owner   string `json:"owner"`
-	Repo    string `json:"repo"`
-	Branch  string `json:"branch,omitempty"`
-	Path    string `json:"path,omitempty"`
-	Since   string `json:"since,omitempty"` // ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
-	Until   string `json:"until,omitempty"` // ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
-	Page    int    `json:"page,omitempty"`
-	PerPage int    `json:"per_page,omitempty"`
+	Owner   string `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo    string `json:"repo" jsonschema:"description=The name of the repository to list commits from"`
+	Branch  string `json:"branch,omitempty" jsonschema:"description=The branch name or commit SHA to list commits from. Default: the repository's default branch"`
+	Path    string `json:"path,omitempty" jsonschema:"description=Only commits containing changes to this file path will be returned"`
+	Since   string `json:"since,omitempty" jsonschema:"description=Only commits after this date will be returned. ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"`
+	Until   string `json:"until,omitempty" jsonschema:"description=Only commits before this date will be returned. ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ"`
+	Page    int    `json:"page,omitempty" jsonschema:"description=Page number of the results to fetch. Default: 1"`
+	PerPage int    `json:"per_page,omitempty" jsonschema:"description=Number of results per page. Default: 30. Maximum: 100"`
 }
 
 // Validate validates the ListCommitsOptions

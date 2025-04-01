@@ -10,12 +10,12 @@ import (
 
 // CreateIssueOptions defines options for creating an issue
 type CreateIssueOptions struct {
-	Owner     string   `json:"owner"`
-	Repo      string   `json:"repo"`
-	Title     string   `json:"title"`
-	Body      string   `json:"body"`
-	Assignees []string `json:"assignees,omitempty"`
-	Labels    []string `json:"labels,omitempty"`
+	Owner     string   `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo      string   `json:"repo" jsonschema:"description=The name of the repository where the issue will be created"`
+	Title     string   `json:"title" jsonschema:"description=The title of the issue"`
+	Body      string   `json:"body" jsonschema:"description=The body content of the issue"`
+	Assignees []string `json:"assignees,omitempty" jsonschema:"description=A list of usernames to assign to this issue"`
+	Labels    []string `json:"labels,omitempty" jsonschema:"description=A list of label names to add to this issue"`
 }
 
 // Validate validates the CreateIssueOptions
@@ -34,9 +34,9 @@ func (o *CreateIssueOptions) Validate() error {
 
 // GetIssueOptions defines options for getting an issue
 type GetIssueOptions struct {
-	Owner  string `json:"owner"`
-	Repo   string `json:"repo"`
-	Number int    `json:"number"`
+	Owner  string `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo   string `json:"repo" jsonschema:"description=The name of the repository containing the issue"`
+	Number int    `json:"number" jsonschema:"description=The issue number to retrieve"`
 }
 
 // Validate validates the GetIssueOptions
@@ -55,13 +55,13 @@ func (o *GetIssueOptions) Validate() error {
 
 // ListIssuesOptions defines options for listing issues
 type ListIssuesOptions struct {
-	Owner     string `json:"owner"`
-	Repo      string `json:"repo"`
-	State     string `json:"state,omitempty"`     // open, closed, all
-	Sort      string `json:"sort,omitempty"`      // created, updated, comments
-	Direction string `json:"direction,omitempty"` // asc, desc
-	Page      int    `json:"page,omitempty"`
-	PerPage   int    `json:"per_page,omitempty"`
+	Owner     string `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo      string `json:"repo" jsonschema:"description=The name of the repository to list issues from"`
+	State     string `json:"state,omitempty" jsonschema:"description=Filter issues by state. Can be one of: open closed all. Default: open"`
+	Sort      string `json:"sort,omitempty" jsonschema:"description=What to sort results by. Can be one of: created updated comments. Default: created"`
+	Direction string `json:"direction,omitempty" jsonschema:"description=The direction of the sort. Can be one of: asc desc. Default: desc"`
+	Page      int    `json:"page,omitempty" jsonschema:"description=Page number of the results to fetch. Default: 1"`
+	PerPage   int    `json:"per_page,omitempty" jsonschema:"description=Number of results per page. Default: 30. Maximum: 100"`
 }
 
 // Validate validates the ListIssuesOptions
@@ -86,14 +86,14 @@ func (o *ListIssuesOptions) Validate() error {
 
 // UpdateIssueOptions defines options for updating an issue
 type UpdateIssueOptions struct {
-	Owner     string   `json:"owner"`
-	Repo      string   `json:"repo"`
-	Number    int      `json:"number"`
-	Title     string   `json:"title,omitempty"`
-	Body      string   `json:"body,omitempty"`
-	State     string   `json:"state,omitempty"` // open, closed
-	Assignees []string `json:"assignees,omitempty"`
-	Labels    []string `json:"labels,omitempty"`
+	Owner     string   `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo      string   `json:"repo" jsonschema:"description=The name of the repository containing the issue to update"`
+	Number    int      `json:"number" jsonschema:"description=The issue number to update"`
+	Title     string   `json:"title,omitempty" jsonschema:"description=The new title of the issue"`
+	Body      string   `json:"body,omitempty" jsonschema:"description=The new body content of the issue"`
+	State     string   `json:"state,omitempty" jsonschema:"description=The state of the issue. Can be one of: open closed"`
+	Assignees []string `json:"assignees,omitempty" jsonschema:"description=A list of usernames to assign to this issue. Pass an empty array to clear all assignees"`
+	Labels    []string `json:"labels,omitempty" jsonschema:"description=A list of label names to add to this issue. Pass an empty array to clear all labels"`
 }
 
 // Validate validates the UpdateIssueOptions
@@ -115,10 +115,10 @@ func (o *UpdateIssueOptions) Validate() error {
 
 // IssueCommentOptions defines options for adding a comment to an issue
 type IssueCommentOptions struct {
-	Owner  string `json:"owner"`
-	Repo   string `json:"repo"`
-	Number int    `json:"number"`
-	Body   string `json:"body"`
+	Owner  string `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo   string `json:"repo" jsonschema:"description=The name of the repository containing the issue to comment on"`
+	Number int    `json:"number" jsonschema:"description=The issue number to add a comment to"`
+	Body   string `json:"body" jsonschema:"description=The contents of the comment to add"`
 }
 
 // Validate validates the IssueCommentOptions

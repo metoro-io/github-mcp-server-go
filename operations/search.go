@@ -10,9 +10,9 @@ import (
 
 // SearchCodeOptions defines options for searching code
 type SearchCodeOptions struct {
-	Query   string `json:"query"`
-	Page    int    `json:"page,omitempty"`
-	PerPage int    `json:"per_page,omitempty"`
+	Query   string `json:"query" jsonschema:"description=The search query string. Format follows GitHub's code search syntax. Example: filename:.go extension:go"`
+	Page    int    `json:"page,omitempty" jsonschema:"description=Page number of the results to fetch. Default: 1"`
+	PerPage int    `json:"per_page,omitempty" jsonschema:"description=Number of results per page. Default: 30. Maximum: 100"`
 }
 
 // Validate validates the SearchCodeOptions
@@ -25,9 +25,9 @@ func (o *SearchCodeOptions) Validate() error {
 
 // SearchIssuesOptions defines options for searching issues and pull requests
 type SearchIssuesOptions struct {
-	Query   string `json:"query"`
-	Page    int    `json:"page,omitempty"`
-	PerPage int    `json:"per_page,omitempty"`
+	Query   string `json:"query" jsonschema:"description=The search query string. Format follows GitHub's issue search syntax. Example: is:issue is:open label:bug"`
+	Page    int    `json:"page,omitempty" jsonschema:"description=Page number of the results to fetch. Default: 1"`
+	PerPage int    `json:"per_page,omitempty" jsonschema:"description=Number of results per page. Default: 30. Maximum: 100"`
 }
 
 // Validate validates the SearchIssuesOptions
@@ -40,9 +40,9 @@ func (o *SearchIssuesOptions) Validate() error {
 
 // SearchUsersOptions defines options for searching users
 type SearchUsersOptions struct {
-	Query   string `json:"query"`
-	Page    int    `json:"page,omitempty"`
-	PerPage int    `json:"per_page,omitempty"`
+	Query   string `json:"query" jsonschema:"description=The search query string. Format follows GitHub's user search syntax. Example: type:user language:go location:japan"`
+	Page    int    `json:"page,omitempty" jsonschema:"description=Page number of the results to fetch. Default: 1"`
+	PerPage int    `json:"per_page,omitempty" jsonschema:"description=Number of results per page. Default: 30. Maximum: 100"`
 }
 
 // Validate validates the SearchUsersOptions

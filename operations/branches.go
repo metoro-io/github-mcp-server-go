@@ -9,10 +9,10 @@ import (
 
 // CreateBranchOptions defines the options for creating a branch
 type CreateBranchOptions struct {
-	Owner      string `json:"owner"`
-	Repo       string `json:"repo"`
-	Branch     string `json:"branch"`
-	FromBranch string `json:"from_branch"`
+	Owner      string `json:"owner" jsonschema:"description=The username or organization name that owns the repository"`
+	Repo       string `json:"repo" jsonschema:"description=The name of the repository where the branch will be created"`
+	Branch     string `json:"branch" jsonschema:"description=The name of the new branch to create. Must follow Git branch naming rules (no spaces no .. sequences etc.)"`
+	FromBranch string `json:"from_branch" jsonschema:"description=The name of the source branch to create the new branch from. The new branch will start with the same commit history as this branch"`
 }
 
 // Validate validates the CreateBranchOptions
