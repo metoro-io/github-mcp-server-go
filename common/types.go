@@ -362,3 +362,18 @@ type GitHubSearchUsersResponse struct {
 	IncompleteResults bool         `json:"incomplete_results"`
 	Items             []GitHubUser `json:"items"`
 }
+
+// GitHubRef represents a Git reference (branch, tag, etc.) in a GitHub repository
+type GitHubRef struct {
+	Ref    string    `json:"ref"`
+	NodeID string    `json:"node_id"`
+	URL    string    `json:"url"`
+	Object RefObject `json:"object"`
+}
+
+// RefObject represents the object a Git reference points to
+type RefObject struct {
+	SHA  string `json:"sha"`
+	Type string `json:"type"`
+	URL  string `json:"url"`
+}

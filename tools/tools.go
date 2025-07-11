@@ -99,6 +99,11 @@ var GitHubToolsList = []GitHubTool{
 		Description: "Search for users on GitHub",
 		Handler:     SearchUsersHandler,
 	},
+	{
+		Name:        "get_tags",
+		Description: "Get all tags for a GitHub repository",
+		Handler:     GetTagsHandler,
+	},
 }
 
 // SearchRepositoriesHandler handles search_repositories requests
@@ -361,6 +366,23 @@ func SearchUsersHandler(ctx context.Context, args operations.SearchUsersOptions)
 	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
 
 	result, err := operations.SearchUsers(&args, apiReqs)
+	if err != nil {
+		return nil, formatError(err)
+	}
+
+	jsonData, err := json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+
+	return mcpgolang.NewToolResponse(mcpgolang.NewTextContent(string(jsonData))), nil
+}
+
+// GetTagsHandler handles get_tags requests
+func GetTagsHandler(ctx context.Context, args operations.GetTagsOptions) (*mcpgolang.ToolResponse, error) {
+	apiReqs := common.GetGitHubAPIRequirementsFromContext(ctx)
+
+	result, err := operations.GetTags(&args, apiReqs)
 	if err != nil {
 		return nil, formatError(err)
 	}
